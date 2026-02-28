@@ -27,7 +27,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
     background: var(--deep);
@@ -37,6 +37,12 @@
     font-weight: 400;
     line-height: 1.7;
     overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Ensure all links/buttons have minimum 44px tap targets on mobile */
+  @media (pointer: coarse) {
+    a, button { min-height: 44px; }
   }
 
   ::selection {
@@ -502,26 +508,137 @@
 
   /* ---- RESPONSIVE ---- */
   @media (max-width: 768px) {
-    nav { padding: 16px 24px; }
-    .nav-links { gap: 20px; }
-    .nav-links a { font-size: 11px; letter-spacing: 2px; }
+    body { font-size: 17px; }
+
+    nav { padding: 14px 20px; }
+    .nav-links { gap: 16px; }
+    .nav-links a { font-size: 11px; letter-spacing: 1.5px; }
     .nav-logo-text { font-size: 13px; letter-spacing: 3px; }
+    .nav-logo-icon { width: 32px; height: 32px; }
 
-    .hero { padding: 100px 24px 60px; }
-    .hero-icon { width: 76px; height: 76px; margin-bottom: 30px; }
+    .hero { padding: 90px 20px 50px; min-height: auto; }
+    .hero-icon { width: 72px; height: 72px; margin-bottom: 28px; }
+    .hero h1 { font-size: 32px; margin-bottom: 20px; }
+    .hero p { font-size: 19px; margin-bottom: 36px; }
+    .hero-glow { width: 350px; height: 350px; }
 
-    .features-grid { grid-template-columns: 1fr; }
+    .hero-badges { flex-direction: column; align-items: stretch; padding: 0 20px; }
+    .badge { justify-content: center; padding: 14px 24px; }
 
-    .support-content,
-    .policy-content { padding: 36px 28px; }
+    .container { padding: 0 20px; }
 
-    .hero-badges { flex-direction: column; align-items: center; }
+    .section-title { font-size: 26px; margin-bottom: 36px; }
+    .section-label { font-size: 11px; letter-spacing: 4px; }
+
+    .features { padding: 20px 0 60px; }
+    .features-grid { grid-template-columns: 1fr; gap: 16px; }
+    .feature-card { padding: 28px 24px; }
+    .feature-name { font-size: 17px; }
+    .feature-desc { font-size: 16px; }
+
+    .support { padding: 60px 0; }
+    .support-content { padding: 32px 22px; }
+    .support-content h3 { font-size: 20px; }
+    .faq-item { padding: 20px 20px; }
+    .faq-q { font-size: 15px; }
+    .faq-a { font-size: 16px; }
+
+    .privacy { padding: 60px 0; }
+    .policy-content { padding: 32px 22px; }
+    .policy-section h3 { font-size: 17px; }
+    .policy-section p { font-size: 16px; }
+
+    .divider { padding: 40px 0; }
+
+    .footer-links { gap: 20px; }
+    .footer-links a { font-size: 11px; }
   }
 
   @media (max-width: 480px) {
+    nav { padding: 12px 16px; }
     .nav-logo-text { display: none; }
-    .nav-links { gap: 14px; }
-    .nav-links a { font-size: 10px; letter-spacing: 1.5px; }
+    .nav-logo-icon { width: 30px; height: 30px; }
+    .nav-links { gap: 12px; }
+    .nav-links a { font-size: 10px; letter-spacing: 1.2px; }
+
+    .hero { padding: 80px 16px 40px; }
+    .hero-icon { width: 64px; height: 64px; margin-bottom: 24px; }
+    .hero h1 { font-size: 28px; }
+    .hero p { font-size: 17px; }
+    .hero-badges { padding: 0 8px; }
+    .badge { font-size: 12px; padding: 12px 20px; }
+
+    .container { padding: 0 16px; }
+    .section-title { font-size: 23px; margin-bottom: 28px; }
+
+    .feature-card { padding: 24px 20px; border-radius: 16px; }
+
+    .support-content,
+    .policy-content { padding: 28px 18px; border-radius: 18px; }
+    .faq-item { padding: 18px 16px; border-radius: 12px; }
+
+    footer { padding: 40px 16px 32px; }
+    .footer-links { flex-direction: column; gap: 12px; align-items: center; }
+  }
+
+  /* ---- HAMBURGER MENU ---- */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 110;
+  }
+  .hamburger span {
+    width: 24px;
+    height: 2px;
+    background: var(--lilac);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  @media (max-width: 600px) {
+    .hamburger { display: flex; }
+
+    .nav-links {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(8,1,15,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+      z-index: 105;
+    }
+    .nav-links.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .nav-links a {
+      font-size: 16px;
+      letter-spacing: 4px;
+      opacity: 1;
+    }
   }
 
   /* ---- ANIMATIONS ---- */
@@ -574,12 +691,15 @@
     </svg>
     <span class="nav-logo-text">COSMIC KRONOS</span>
   </a>
-  <ul class="nav-links">
-    <li><a href="#features">FEATURES</a></li>
-    <li><a href="#support">SUPPORT</a></li>
-    <li><a href="#privacy">PRIVACY</a></li>
-    <li><a href="#contact">CONTACT</a></li>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#features" onclick="closeMenu()">FEATURES</a></li>
+    <li><a href="#support" onclick="closeMenu()">SUPPORT</a></li>
+    <li><a href="#privacy" onclick="closeMenu()">PRIVACY</a></li>
+    <li><a href="#contact" onclick="closeMenu()">CONTACT</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- Hero -->
@@ -726,66 +846,28 @@
       <p class="policy-updated">Last updated: February 28, 2026</p>
 
       <div class="policy-section">
-        <h3>Introduction</h3>
-        <p>Cosmic Kronos ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use the Cosmic Kronos mobile application ("the App"). By using the App, you agree to the collection and use of information in accordance with this policy.</p>
+        <h3>No Data Collected</h3>
+        <p>Cosmic Kronos does not collect any data from its users. No personal information, usage data, analytics, diagnostics, or any other data is transmitted off your device — ever. Everything you enter into the app stays entirely on your device.</p>
       </div>
 
       <div class="policy-section">
-        <h3>Information We Collect</h3>
-        <p>We may collect the following types of information:</p>
-        <ul>
-          <li>Birth date, birth time, and birth location that you voluntarily provide to generate your natal chart. This data is stored locally on your device.</li>
-          <li>Saved chart bookmarks and preferences, stored locally on your device.</li>
-          <li>Anonymous usage analytics (e.g., feature usage frequency, session duration) to help us improve the app experience. This data is aggregated and cannot be used to identify you personally.</li>
-          <li>Device information such as operating system version, device model, and app version for crash reporting and diagnostics.</li>
-        </ul>
+        <h3>No Third-Party Code</h3>
+        <p>Cosmic Kronos does not include any third-party analytics tools, advertising networks, third-party SDKs, or external vendor code that collects or transmits data from the app. There are no trackers, no cookies, and no server calls that send your information anywhere.</p>
       </div>
 
       <div class="policy-section">
-        <h3>How We Use Your Information</h3>
-        <p>We use the information we collect to:</p>
-        <ul>
-          <li>Generate and display your natal chart and personalized transit information.</li>
-          <li>Power the pattern-matching and similarity search features.</li>
-          <li>Improve app performance, fix bugs, and develop new features.</li>
-          <li>Respond to your support requests and inquiries.</li>
-        </ul>
-      </div>
-
-      <div class="policy-section">
-        <h3>Data Storage &amp; Security</h3>
-        <p>Your personal astrological data (birth information, saved charts) is stored locally on your device and is not transmitted to our servers unless you explicitly choose to create an account for cloud sync purposes. We implement industry-standard security measures to protect any data processed through our services.</p>
-      </div>
-
-      <div class="policy-section">
-        <h3>Third-Party Services</h3>
-        <p>The App may use third-party services for analytics and crash reporting. These services may collect anonymous, non-personally-identifiable information in accordance with their own privacy policies. We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
-      </div>
-
-      <div class="policy-section">
-        <h3>Children's Privacy</h3>
-        <p>Cosmic Kronos is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us so we can take appropriate action.</p>
-      </div>
-
-      <div class="policy-section">
-        <h3>Your Rights</h3>
-        <p>You have the right to:</p>
-        <ul>
-          <li>Access the personal data we hold about you.</li>
-          <li>Request deletion of your data at any time.</li>
-          <li>Opt out of analytics data collection through the app's settings.</li>
-          <li>Export your saved chart data from the app.</li>
-        </ul>
+        <h3>Local Storage Only</h3>
+        <p>All information you provide — including birth date, birth time, birth location, saved charts, and preferences — is stored locally on your device. This data is never transmitted to us or any third party. To delete this data, simply clear the app's data in your device settings or uninstall the app.</p>
       </div>
 
       <div class="policy-section">
         <h3>Changes to This Policy</h3>
-        <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date. We encourage you to review this policy periodically for any changes.</p>
+        <p>If we ever update this Privacy Policy, changes will be posted on this page with a new revision date. Our commitment is simple: your data stays on your device.</p>
       </div>
 
       <div class="policy-section" id="contact">
         <h3>Contact Us</h3>
-        <p>If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:<br>
+        <p>If you have any questions about this Privacy Policy, please contact us at:<br>
         <a href="mailto:utoappia@gmail.com" class="email-link">utoappia@gmail.com</a></p>
       </div>
     </div>
@@ -810,6 +892,16 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
   });
+
+  // Hamburger menu
+  function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('navLinks').classList.remove('open');
+  }
 
   // Fade-in on scroll
   const observer = new IntersectionObserver((entries) => {
